@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "Poker Hand Log",
+    "slug": "poker-hand-log",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "backgroundColor": "#0b160b",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0b160b"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#0b160b"
+      },
+      "package": "com.pokerhandlog.app"
+    },
+    "platforms": ["android", "ios"],
+    "sdkVersion": "51.0.0"
+  }
+}
