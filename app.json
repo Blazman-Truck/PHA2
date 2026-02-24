@@ -18,7 +18,16 @@
       },
       "package": "com.pokerhandlog.app"
     },
-    "platforms": ["android", "ios"],
-    "sdkVersion": "51.0.0"
+    "platforms": [
+      "android",
+      "ios"
+    ],
+    "sdkVersion": "51.0.0",
+    "extra": {
+      "eas": {
+        "projectId": "bd65fa36-a71e-41e6-8e36-d0a4ddd40ae4"
+      }
+    },
+    "owner": "blazmans-organization"
   }
 }
