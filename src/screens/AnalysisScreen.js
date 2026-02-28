@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, StatusBar, SafeAreaView, ActivityIndicator, Clipboard,
+  StyleSheet, StatusBar, SafeAreaView, ActivityIndicator, Clipboard, Linking, // Added Linking
 } from 'react-native';
 import { colors } from '../theme';
 
@@ -41,12 +41,28 @@ export default function AnalysisScreen({ hand, cachedAnalysis, onAnalysisSaved, 
     }
   };
 
-  // Function to handle sharing
-  const handleShare = () => {
+  // Function to handle copying to clipboard
+  const handleShareClipboard = () => {
     const shareText = `Poker Hand Analysis:\n\nHand: ${hand}\n\nAnalysis: ${analysis || 'No analysis available yet.'}\n\n`;
     Clipboard.setString(shareText);
-    // You might want to add some visual feedback here, like a toast message.
     alert('Hand and analysis copied to clipboard!'); // Simple alert for feedback
+  };
+
+  // Function to handle sharing via email
+  const handleShareEmail = () => {
+    const subject = encodeURIComponent("Check out this hand");
+    const body = encodeURIComponent(`Poker Hand Analysis:\n\nHand: ${hand}\n\nAnalysis: ${analysis || 'No analysis available yet.'}\n\n`);
+    const mailtoUrl = `mailto:?subject=${subject}&body=${body}`;
+
+    Linking.canOpenURL(mailtoUrl)
+      .then((supported) => {
+        if (supported) {
+          Linking.openURL(mailtoUrl);
+        } else {
+          alert("Cannot open email client. Please ensure you have an email app configured.");
+        }
+      })
+      .catch((err) => console.error('An error occurred', err));
   };
 
   // Auto-run only if no cached analysis
@@ -72,10 +88,15 @@ export default function AnalysisScreen({ hand, cachedAnalysis, onAnalysisSaved, 
             <TouchableOpacity style={styles.backBtn} onPress={runAnalysis} activeOpacity={0.75}>
               <Text style={styles.backBtnText}>↺ REDO</Text>
             </TouchableOpacity>
-            {analysis && ( // Only show share button if analysis is available
-              <TouchableOpacity style={styles.backBtn} onPress={handleShare} activeOpacity={0.75}>
-                <Text style={styles.backBtnText}>SHARE</Text>
-              </TouchableOpacity>
+            {analysis && ( // Only show share buttons if analysis is available
+              <>
+                <TouchableOpacity style={styles.backBtn} onPress={handleShareClipboard} activeOpacity={0.75}>
+                  <Text style={styles.backBtnText}>COPY</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.backBtn} onPress={handleShareEmail} activeOpacity={0.75}>
+                  <Text style={styles.backBtnText}>EMAIL</Text>
+                </TouchableOpacity>
+              </>
             )}
           </>
         )}
