@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   headerTitle: { flex: 1, color: colors.green, fontSize: 20, fontWeight: '700', letterSpacing: 3 },
 
   scroll: { flex: 1 },
-  scrollContent: { padding: 14, gap: 14, paddingBottom: 250 }, // Increased paddingBottom
+  scrollContent: { padding: 14, gap: 14, paddingBottom: 350 }, // Increased paddingBottom for Android nav menu
 
   handBox: {
     backgroundColor: colors.bgInput,
