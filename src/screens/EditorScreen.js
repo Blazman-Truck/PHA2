@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
   },
 
   scroll: { flex: 1 },
-  scrollContent: { padding: 14, gap: 10, paddingBottom: 20 },
+  scrollContent: { padding: 14, gap: 10, paddingBottom: 250 }, // Increased paddingBottom
 
   section: {
     backgroundColor: colors.bgSection,
