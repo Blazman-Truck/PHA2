@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, StatusBar, SafeAreaView, ActivityIndicator,
+  StyleSheet, StatusBar, SafeAreaView, ActivityIndicator, Clipboard,
 } from 'react-native';
 import { colors } from '../theme';
 
@@ -41,6 +41,14 @@ export default function AnalysisScreen({ hand, cachedAnalysis, onAnalysisSaved, 
     }
   };
 
+  // Function to handle sharing
+  const handleShare = () => {
+    const shareText = `Poker Hand Analysis:\n\nHand: ${hand}\n\nAnalysis: ${analysis || 'No analysis available yet.'}\n\n`;
+    Clipboard.setString(shareText);
+    // You might want to add some visual feedback here, like a toast message.
+    alert('Hand and analysis copied to clipboard!'); // Simple alert for feedback
+  };
+
   // Auto-run only if no cached analysis
   if (!hasRun.current) {
     hasRun.current = true;
@@ -60,9 +68,16 @@ export default function AnalysisScreen({ hand, cachedAnalysis, onAnalysisSaved, 
         </TouchableOpacity>
         <Text style={styles.headerTitle}>ANALYSIS</Text>
         {!analyzing && (
-          <TouchableOpacity style={styles.backBtn} onPress={runAnalysis} activeOpacity={0.75}>
-            <Text style={styles.backBtnText}>↺ REDO</Text>
-          </TouchableOpacity>
+          <>
+            <TouchableOpacity style={styles.backBtn} onPress={runAnalysis} activeOpacity={0.75}>
+              <Text style={styles.backBtnText}>↺ REDO</Text>
+            </TouchableOpacity>
+            {analysis && ( // Only show share button if analysis is available
+              <TouchableOpacity style={styles.backBtn} onPress={handleShare} activeOpacity={0.75}>
+                <Text style={styles.backBtnText}>SHARE</Text>
+              </TouchableOpacity>
+            )}
+          </>
         )}
       </View>
 
@@ -162,4 +177,3 @@ const styles = StyleSheet.create({
   analysisText: { fontSize: 13, color: colors.greenMid, lineHeight: 24 },
   errorText: { fontSize: 12, color: colors.red, lineHeight: 20 },
 });
-
