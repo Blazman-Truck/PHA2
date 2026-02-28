@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, StatusBar, SafeAreaView, ActivityIndicator, Clipboard, Linking, // Added Linking
+  StyleSheet, StatusBar, SafeAreaView, ActivityIndicator, Clipboard, Linking, Alert, // Added Alert
 } from 'react-native';
 import { colors } from '../theme';
 
@@ -65,6 +65,29 @@ export default function AnalysisScreen({ hand, cachedAnalysis, onAnalysisSaved, 
       .catch((err) => console.error('An error occurred', err));
   };
 
+  // Function to present share options
+  const handleShareOptions = () => {
+    Alert.alert(
+      "Share Analysis",
+      "How would you like to share this hand and analysis?",
+      [
+        {
+          text: "Copy to Clipboard",
+          onPress: handleShareClipboard,
+        },
+        {
+          text: "Email",
+          onPress: handleShareEmail,
+        },
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
   // Auto-run only if no cached analysis
   if (!hasRun.current) {
     hasRun.current = true;
@@ -88,15 +111,10 @@ export default function AnalysisScreen({ hand, cachedAnalysis, onAnalysisSaved, 
             <TouchableOpacity style={styles.backBtn} onPress={runAnalysis} activeOpacity={0.75}>
               <Text style={styles.backBtnText}>↺ REDO</Text>
             </TouchableOpacity>
-            {analysis && ( // Only show share buttons if analysis is available
-              <>
-                <TouchableOpacity style={styles.backBtn} onPress={handleShareClipboard} activeOpacity={0.75}>
-                  <Text style={styles.backBtnText}>COPY</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.backBtn} onPress={handleShareEmail} activeOpacity={0.75}>
-                  <Text style={styles.backBtnText}>EMAIL</Text>
-                </TouchableOpacity>
-              </>
+            {analysis && ( // Only show share button if analysis is available
+              <TouchableOpacity style={styles.backBtn} onPress={handleShareOptions} activeOpacity={0.75}>
+                <Text style={styles.backBtnText}>SHARE</Text>
+              </TouchableOpacity>
             )}
           </>
         )}
@@ -167,7 +185,7 @@ const styles = StyleSheet.create({
   headerTitle: { flex: 1, color: colors.green, fontSize: 20, fontWeight: '700', letterSpacing: 3 },
 
   scroll: { flex: 1 },
-  scrollContent: { padding: 14, gap: 14, paddingBottom: 30 },
+  scrollContent: { padding: 14, gap: 14, paddingBottom: 80 }, // Increased paddingBottom
 
   handBox: {
     backgroundColor: colors.bgInput,
