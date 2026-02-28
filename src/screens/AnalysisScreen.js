@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, StatusBar, SafeAreaView, ActivityIndicator, Clipboard, Linking, Alert, // Added Alert
+  StyleSheet, StatusBar, SafeAreaView, ActivityIndicator, Clipboard, Linking, Alert,
 } from 'react-native';
 import { colors } from '../theme';
 
@@ -45,7 +45,6 @@ export default function AnalysisScreen({ hand, cachedAnalysis, onAnalysisSaved, 
   const handleShareClipboard = () => {
     const shareText = `Poker Hand Analysis:\n\nHand: ${hand}\n\nAnalysis: ${analysis || 'No analysis available yet.'}\n\n`;
     Clipboard.setString(shareText);
-    // alert('Hand and analysis copied to clipboard!'); // Removed alert
   };
 
   // Function to handle sharing via email
@@ -59,7 +58,11 @@ export default function AnalysisScreen({ hand, cachedAnalysis, onAnalysisSaved, 
         if (supported) {
           Linking.openURL(mailtoUrl);
         } else {
-          // alert("Cannot open email client. Please ensure you have an email app configured."); // Removed alert
+          Alert.alert( // Re-added alert for no email client
+            "No Email Client",
+            "Cannot open email client. Please ensure you have an email app installed and configured on your device.",
+            [{ text: "OK" }]
+          );
         }
       })
       .catch((err) => console.error('An error occurred', err));
@@ -185,7 +188,7 @@ const styles = StyleSheet.create({
   headerTitle: { flex: 1, color: colors.green, fontSize: 20, fontWeight: '700', letterSpacing: 3 },
 
   scroll: { flex: 1 },
-  scrollContent: { padding: 14, gap: 14, paddingBottom: 150 }, // Increased paddingBottom
+  scrollContent: { padding: 14, gap: 14, paddingBottom: 250 }, // Increased paddingBottom
 
   handBox: {
     backgroundColor: colors.bgInput,
